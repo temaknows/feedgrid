@@ -1,0 +1,28 @@
+<div
+  class="relative flex h-full w-full hover:cursor-grab active:cursor-grabbing"
+>
+  <div
+    #innerSlider
+    class="flex flex-row overflow-hidden duration-500 transition-transform"
+  >
+    <img
+      *ngFor="let img of images; let i = index"
+      [alt]="'img' + i"
+      class="h-full w-full object-cover img"
+      [attr.data-elemidx]="i"
+      [draggable]="false"
+      [ngSrc]="img"
+      [loading]="i === 0 ? 'eager' : 'lazy'"
+      width="300"
+      height="300"
+    />
+    />
+  </div>
+
+  <fg-slider-dots
+    class="absolute bottom-2 left-0 w-full"
+    [dots]="images.length"
+    [current]="current"
+    (dotChanged)="nav($event)"
+  ></fg-slider-dots>
+</div>
