@@ -1,16 +1,16 @@
 <div
-  class="flex flex-row justify-center flex-nowrap gap-1 h-2 w-max m-auto transition-all duration-150 hover:h-4 hover:p-1 hover:rounded-full hover:bg-slate-400 hover:cursor-default"
+  class="flex flex-row justify-center flex-nowrap gap-1 h-2 w-max m-auto transition-all duration-150 hover:h-6 hover:p-1 hover:rounded-full hover:bg-slate-400 hover:cursor-default"
   [ngClass]="{
-    'h-4 p-1 rounded-full bg-slate-400': touchActive
+    'h-6 p-1 rounded-full bg-slate-400': touchActive
   }"
 >
   <span
     *fgTimes="dots; let i = index"
-    class="block cursor-pointer rounded-full aspect-square bg-white border border-black"
-    [ngClass]="{
-      'bg-blue-600': i === current
-    }"
+    class="block cursor-pointer rounded-full aspect-square border border-black"
+    [class.bg-blue-600]="i === current"
+    [class.bg-white]="i !== current"
     [attr.data-slider-dot]="i"
     (click)="dotChanged.emit(i)"
-  ></span>
+  >
+  </span>
 </div>
