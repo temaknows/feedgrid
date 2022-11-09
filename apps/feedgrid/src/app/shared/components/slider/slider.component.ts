@@ -1,6 +1,8 @@
 import { Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { take, timer } from 'rxjs';
 
+type Point = { x: number; y: number };
+
 @Component({
   selector: 'fg-slider',
   templateUrl: './slider.component.html',
@@ -14,7 +16,7 @@ export class SliderComponent implements OnInit {
   threshold = 0.4;
 
   private isDragging = false;
-  private startX: number | null = null;
+  private startPoint: Point | null = null;
 
   private scrollLeft: number | null = null;
 
@@ -42,23 +44,44 @@ export class SliderComponent implements OnInit {
   @HostListener('mousedown', ['$event'])
   startDrag(event: MouseEvent | TouchEvent) {
     this.isDragging = true;
-    this.startX =
-      (event instanceof MouseEvent ? event.pageX : event.touches[0].pageX) -
-      this.innerSlider.nativeElement.offsetLeft;
+    this.startPoint =
+      event instanceof MouseEvent
+        ? {
+            x: event.pageX,
+            y: event.pageY,
+          }
+        : {
+            x:
+              event.touches[0].pageX -
+              this.innerSlider.nativeElement.offsetLeft,
+            y: event.touches[0].pageY,
+          };
 
     this.scrollLeft = this.innerSlider.nativeElement.scrollLeft;
   }
   @HostListener('touchmove', ['$event'])
   @HostListener('mousemove', ['$event'])
   drag(event: MouseEvent | TouchEvent) {
-    if (!this.isDragging || this.startX === null || this.scrollLeft === null) {
+    if (
+      !this.isDragging ||
+      this.startPoint === null ||
+      this.scrollLeft === null
+    ) {
       return;
     }
+    const point: Point =
+      event instanceof MouseEvent
+        ? { x: event.pageX, y: event.pageY }
+        : { x: event.touches[0].pageX, y: event.touches[0].pageY };
+
+    if (Math.abs(this.startPoint.y - point.y) > 15) {
+      return;
+    }
+
     event.preventDefault();
-    const pageX =
-      event instanceof MouseEvent ? event.pageX : event.touches[0].pageX;
-    const x = pageX - this.innerSlider.nativeElement.offsetLeft;
-    const dist = x - this.startX;
+
+    const x = point.x - this.innerSlider.nativeElement.offsetLeft;
+    const dist = x - this.startPoint.x;
     this.innerSlider.nativeElement.scrollLeft = Math.min(
       Math.max(this.scrollLeft - dist, 0),
       (this.images.length - 1) * this.elementWidth
@@ -75,7 +98,7 @@ export class SliderComponent implements OnInit {
     this.autoScroll();
 
     this.isDragging = false;
-    this.startX = null;
+    this.startPoint = null;
     this.scrollLeft = null;
   }
 
