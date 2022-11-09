@@ -1,11 +1,13 @@
 import { isPresent } from '@/core/helpers';
-import { Component, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
-import { distinctUntilChanged, filter, fromEvent, map } from 'rxjs';
+import { DestroyService } from '@/shared/service/destroy.service';
+import { Component, ElementRef, EventEmitter, HostListener, Inject, Input, Output } from '@angular/core';
+import { distinctUntilChanged, filter, fromEvent, map, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'fg-slider-dots',
   templateUrl: './slider-dots.component.html',
   styleUrls: ['./slider-dots.component.scss'],
+  providers: [DestroyService],
 })
 export class SliderDotsComponent {
   @Input()
@@ -19,9 +21,14 @@ export class SliderDotsComponent {
 
   touchActive = false;
 
-  constructor({ nativeElement }: ElementRef<HTMLElement>) {
+  constructor(
+    @Inject(DestroyService) private readonly destroy$: DestroyService,
+    { nativeElement }: ElementRef<HTMLElement>
+  ) {
     fromEvent(nativeElement, 'touchmove')
       .pipe(
+        takeUntil(this.destroy$),
+        filter(() => this.touchActive),
         map((event: Event) => {
           if (!(event instanceof TouchEvent)) {
             return null;
@@ -29,8 +36,11 @@ export class SliderDotsComponent {
 
           event.preventDefault();
           event.stopPropagation();
-          const { clientX, clientY } = event.touches[0];
-          const target = document.elementFromPoint(clientX, clientY);
+          const { clientX } = event.touches[0];
+
+          const { top, height } = nativeElement.getBoundingClientRect();
+
+          const target = document.elementFromPoint(clientX, top + height / 2);
           return isPresent(target)
             ? target.getAttribute('data-slider-dot')
             : null;

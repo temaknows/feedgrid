@@ -1,4 +1,19 @@
-<div class="grid grid-cols-3 auto-rows-max gap-2 sm:gap-[28px] flex-1">
-  <fg-grid-block *ngFor="let item of list" [data]="item"></fg-grid-block>
+<div
+  class="flex flex-row flex-shrink-0 items-stretch justify-center last:mb-0 mb-[2px] sm:mb-4"
+  *ngFor="let row of list"
+>
+  <fg-grid-block
+    *ngFor="let item of row"
+    [data]="item || null"
+    class="mr-[2px] sm:mr-4 last:mr-0 flex-1"
+  ></fg-grid-block>
+
+  <ng-container *ngIf="row.length % 3 !== 0">
+    <fg-grid-block
+      *fgTimes="3 - (row.length % 3)"
+      [data]="null"
+      class="mr-[2px] sm:mr-4 last:mr-0 flex-1"
+    ></fg-grid-block>
+  </ng-container>
 </div>
 <fg-grid-add class="fixed right-0 bottom-2"> </fg-grid-add>

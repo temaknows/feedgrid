@@ -1,24 +1,25 @@
-<div class="relative block bg-black aspect-square">
-  <ng-container *ngIf="data && data.type === 'carousel'; else img">
-    <fg-slider class="h-full w-full" [images]="data.url"></fg-slider>
-    <!-- <img [src]="data.url[0]" alt="" class="h-full w-full object-cover" /> -->
-  </ng-container>
+<div class="relative block bg-white aspect-square">
+  <ng-container *ngIf="data">
+    <ng-container *ngIf="data.type === 'carousel'; else img">
+      <fg-slider class="h-full w-full" [images]="data.url"></fg-slider>
+    </ng-container>
 
-  <ng-template #img>
-    <img [src]="data!.url" alt="" class="h-full w-full object-cover" />
-  </ng-template>
+    <ng-template #img>
+      <img [src]="data!.url" alt="" class="h-full w-full object-cover" />
+    </ng-template>
 
-  <div
-    *ngIf="data && data?.type !== 'post'"
-    class="absolute w-full h-full left-0 right-0 bottom-0 top-0 flex flex-row justify-end pointer-events-none"
-  >
-    <div class="m-2 h-max">
-      <ng-container
-        *ngTemplateOutlet="data.type === 'carousel' ? carousel : reels"
-      >
-      </ng-container>
+    <div
+      *ngIf="data.type !== 'post'"
+      class="absolute w-full h-full left-0 right-0 bottom-0 top-0 flex flex-row justify-end pointer-events-none"
+    >
+      <div class="m-2 h-max">
+        <ng-container
+          *ngTemplateOutlet="data.type === 'carousel' ? carousel : reels"
+        >
+        </ng-container>
+      </div>
     </div>
-  </div>
+  </ng-container>
 </div>
 
 <ng-template #carousel>
