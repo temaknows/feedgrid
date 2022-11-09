@@ -1,8 +1,9 @@
 <div
-  class="flex flex-row max-w-full justify-center items-center flex-nowrap h-2 p-1 min-w-[60%] m-auto transition-all duration-150 hover:h-6 hover:rounded-full hover:bg-slate-400 hover:cursor-default"
+  class="flex flex-row max-w-full justify-center items-center flex-nowrap sm:max-w-[60%] xl:max-w-[40%] h-2 p-1 m-auto transition-all duration-150 hover:h-6 hover:rounded-full hover:bg-slate-400 hover:cursor-default"
   [ngClass]="{
     'h-6 rounded-full bg-slate-400': touchActive
   }"
+  [style.width]="dots * 10 + '%'"
 >
   <span
     *fgTimes="dots; let i = index"
