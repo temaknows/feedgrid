@@ -74,7 +74,7 @@ export class SliderComponent implements OnInit {
         ? { x: event.pageX, y: event.pageY }
         : { x: event.touches[0].pageX, y: event.touches[0].pageY };
 
-    if (Math.abs(this.startPoint.y - point.y) > 15) {
+    if (Math.abs(this.startPoint.y - point.y) > 15 || !event.cancelable) {
       return;
     }
 
