@@ -11,6 +11,12 @@ const routes: Routes = [
     component: MainLayoutComponent,
     loadChildren: () => GridModule,
   },
+  {
+    path: 'post',
+    component: MainLayoutComponent,
+    loadChildren: () =>
+      import('./features/post/post.module').then((m) => m.PostModule),
+  },
   { path: '**', redirectTo: '' },
 ];
 

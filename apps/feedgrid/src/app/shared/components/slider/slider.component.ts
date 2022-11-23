@@ -59,6 +59,22 @@ export class SliderComponent implements OnInit {
 
     this.scrollLeft = this.innerSlider.nativeElement.scrollLeft;
   }
+
+  @HostListener('window:scroll')
+  @HostListener('window:touchend')
+  @HostListener('window:mouseup')
+  endDrag() {
+    if (!this.isDragging) {
+      return;
+    }
+
+    this.autoScroll();
+
+    this.isDragging = false;
+    this.startPoint = null;
+    this.scrollLeft = null;
+  }
+
   @HostListener('touchmove', ['$event'])
   @HostListener('mousemove', ['$event'])
   drag(event: MouseEvent | TouchEvent) {
@@ -74,7 +90,17 @@ export class SliderComponent implements OnInit {
         ? { x: event.pageX, y: event.pageY }
         : { x: event.touches[0].pageX, y: event.touches[0].pageY };
 
-    if (Math.abs(this.startPoint.y - point.y) > 15 || !event.cancelable) {
+    console.log(
+      Math.abs(this.startPoint.y - point.y),
+      Math.abs(this.startPoint.y - point.y) > 5 &&
+        Math.abs(this.startPoint.x - point.x) < 10
+    );
+
+    if (
+      (Math.abs(this.startPoint.y - point.y) > 5 &&
+        Math.abs(this.startPoint.x - point.x) < 10) ||
+      !event.cancelable
+    ) {
       return;
     }
 
@@ -86,20 +112,6 @@ export class SliderComponent implements OnInit {
       Math.max(this.scrollLeft - dist, 0),
       (this.images.length - 1) * this.elementWidth
     );
-  }
-
-  @HostListener('window:touchend')
-  @HostListener('window:mouseup')
-  endDrag() {
-    if (!this.isDragging) {
-      return;
-    }
-
-    this.autoScroll();
-
-    this.isDragging = false;
-    this.startPoint = null;
-    this.scrollLeft = null;
   }
 
   @HostListener('window:resize')

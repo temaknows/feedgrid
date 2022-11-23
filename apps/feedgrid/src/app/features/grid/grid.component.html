@@ -1,21 +1,24 @@
-<div
-  class="flex flex-row flex-shrink-0 items-stretch justify-center last:mb-0 mb-[2px] sm:mb-4"
-  *ngFor="let row of list"
->
-  <fg-grid-block
-    *ngFor="let item of row"
-    [data]="item || null"
-    class="mr-[2px] sm:mr-4 last:mr-0 flex-1"
-  ></fg-grid-block>
-
-  <ng-container *ngIf="row.length % 3 !== 0">
+<cdk-virtual-scroll-viewport class="h-screen" [itemSize]="rowHeight">
+  <div
+    #rowItem
+    class="flex flex-row flex-shrink-0 items-stretch justify-center last:mb-0 mb-[2px]"
+    *cdkVirtualFor="let row of list"
+  >
     <fg-grid-block
-      *fgTimes="3 - (row.length % 3)"
-      [data]="null"
-      class="mr-[2px] sm:mr-4 last:mr-0 flex-1"
+      *ngFor="let item of row"
+      [data]="item || null"
+      class="mr-[2px] last:mr-0 flex-1 cursor-pointer"
     ></fg-grid-block>
-  </ng-container>
-</div>
+
+    <ng-container *ngIf="row.length % 3 !== 0">
+      <fg-grid-block
+        *fgTimes="3 - (row.length % 3)"
+        [data]="null"
+        class="mr-[2px] last:mr-0 flex-1"
+      ></fg-grid-block>
+    </ng-container>
+  </div>
+</cdk-virtual-scroll-viewport>
 
 <button
   type="button"
