@@ -17,24 +17,9 @@ export class GridComponent implements AfterViewInit {
 
   @ViewChildren('rowItem') rowItems!: QueryList<ElementRef>;
 
-  list: GridList = [...new Array(1e3)]
-    .map(() => ({
-      url: [
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpkr5DeFDSovK8qwXEboMHpVepp1IjRRcaM_6hayCYAw&s',
-      ],
-      type: 'carousel',
-      id: 1,
-      updatedAt: 'asdf',
-      createdAt: 'asdf',
-    }))
-    .reduce<GridList>((list, current, index) => {
-      if (index % 3 === 0) {
-        list.push([current] as GridList[number]);
-      } else {
-        list[list.length - 1].push(current as GridBlock);
-      }
-      return list;
-    }, []);
+  list: GridList = this.generate(6);
+
+  currentPage = 0;
 
   constructor(
     @Inject(WINDOW) private readonly window: Window,
@@ -55,5 +40,36 @@ export class GridComponent implements AfterViewInit {
     this.rowHeight =
       (this.rowItems.first.nativeElement as HTMLElement).getBoundingClientRect()
         .height + 4;
+  }
+
+  loadMore(index: number) {
+    if (index > this.currentPage) {
+      this.list = [...this.list, ...this.generate(6)];
+      this.currentPage++;
+    }
+
+    console.log(this.currentPage);
+  }
+
+  private generate(times: number) {
+    return [...new Array(times)]
+      .map(() => ({
+        url: [
+          'https://dogtowndogtraining.com/wp-content/uploads/2012/06/300x300-061-e1340955308953.jpg',
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJCUXL05Ey9Zg5HlFMmEwvlDIbhxFSkua6-Vwiv7X4L9359R2fLCtgVGcU6JR3-Bd2xho&usqp=CAU',
+        ],
+        type: 'carousel',
+        id: 1,
+        updatedAt: 'asdf',
+        createdAt: 'asdf',
+      }))
+      .reduce<GridList>((list, current, index) => {
+        if (index % 3 === 0) {
+          list.push([current] as GridList[number]);
+        } else {
+          list[list.length - 1].push(current as GridBlock);
+        }
+        return list;
+      }, []);
   }
 }

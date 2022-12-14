@@ -1,3 +1,8 @@
 :host {
-  @apply block  pb-10 sm:pb-14 h-screen;
+  @apply block  pb-10 sm:pb-14;
+  height: calc(100vh - 392px);
+}
+
+.grid {
+  height: calc(100vh - 392px);
 }

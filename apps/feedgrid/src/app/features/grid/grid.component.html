@@ -1,4 +1,8 @@
-<cdk-virtual-scroll-viewport class="h-screen" [itemSize]="rowHeight">
+<cdk-virtual-scroll-viewport
+  class="h-screen"
+  [itemSize]="rowHeight"
+  (scrolledIndexChange)="loadMore($event)"
+>
   <div
     #rowItem
     class="flex flex-row flex-shrink-0 items-stretch justify-center last:mb-0 mb-[2px]"
