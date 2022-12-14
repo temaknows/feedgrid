@@ -17,7 +17,7 @@ export class GridComponent implements AfterViewInit {
 
   @ViewChildren('rowItem') rowItems!: QueryList<ElementRef>;
 
-  list: GridList = this.generate(6);
+  list: GridList = this.generate(9);
 
   currentPage = 0;
 
@@ -47,10 +47,9 @@ export class GridComponent implements AfterViewInit {
       this.list = [...this.list, ...this.generate(6)];
       this.currentPage++;
     }
-
-    console.log(this.currentPage);
   }
 
+  //temp function
   private generate(times: number) {
     return [...new Array(times)]
       .map(() => ({
