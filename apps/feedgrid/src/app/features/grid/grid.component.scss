@@ -1,5 +1,5 @@
 :host {
-  @apply block  pb-10 sm:pb-14;
+  @apply block  pb-10 sm:pb-14 select-none;
   height: calc(100vh - 392px);
 }
 

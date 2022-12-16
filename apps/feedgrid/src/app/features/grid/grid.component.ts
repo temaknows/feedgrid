@@ -44,7 +44,7 @@ export class GridComponent implements AfterViewInit {
 
   loadMore(index: number) {
     if (index > this.currentPage) {
-      this.list = [...this.list, ...this.generate(6)];
+      this.list = [...this.list, ...this.generate(3)];
       this.currentPage++;
     }
   }

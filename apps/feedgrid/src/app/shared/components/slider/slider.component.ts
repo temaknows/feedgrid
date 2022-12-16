@@ -63,6 +63,7 @@ export class SliderComponent implements OnInit {
   @HostListener('window:scroll')
   @HostListener('window:touchend')
   @HostListener('window:mouseup')
+  @HostListener('pointerleave')
   endDrag() {
     if (!this.isDragging) {
       return;
@@ -89,12 +90,6 @@ export class SliderComponent implements OnInit {
       event instanceof MouseEvent
         ? { x: event.pageX, y: event.pageY }
         : { x: event.touches[0].pageX, y: event.touches[0].pageY };
-
-    console.log(
-      Math.abs(this.startPoint.y - point.y),
-      Math.abs(this.startPoint.y - point.y) > 5 &&
-        Math.abs(this.startPoint.x - point.x) < 10
-    );
 
     if (
       (Math.abs(this.startPoint.y - point.y) > 5 &&

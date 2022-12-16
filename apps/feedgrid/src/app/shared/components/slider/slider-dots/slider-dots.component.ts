@@ -38,8 +38,7 @@ export class SliderDotsComponent {
           event.stopPropagation();
           const { clientX } = event.touches[0];
 
-          const { top, height, left, right } =
-            nativeElement.getBoundingClientRect();
+          const { top, height } = nativeElement.getBoundingClientRect();
 
           const target = document.elementFromPoint(clientX, top + height / 2);
           return isPresent(target)
